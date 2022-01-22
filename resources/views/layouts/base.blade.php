@@ -94,6 +94,9 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="user_actions">
                           <li>
+                            <a href="{{ route('user.dashboard') }}">Thống kê</a>
+                          </li>
+                          <li>
                             <a href="{{ route('user.orders') }}">Đơn hàng của tôi</a>
                           </li>
                           <li>

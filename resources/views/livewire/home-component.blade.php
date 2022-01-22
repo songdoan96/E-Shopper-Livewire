@@ -90,7 +90,7 @@
             </div>
             <!--/brands_products-->
 
-            <div class="price-range">
+            {{-- <div class="price-range">
               <!--price-range-->
               <h2>Lọc theo giá</h2>
               <div class="well text-center">
@@ -100,7 +100,7 @@
               </div>
 
 
-            </div>
+            </div> --}}
             <!--/price-range-->
 
             <div class="shipping text-center">
@@ -238,7 +238,8 @@
                             <div class="single-products">
                               <div class="productinfo text-center">
                                 <a href="{{ route('product.details', ['product_slug' => $pro_of_cat->slug]) }}">
-                                  <img src="{{ asset('assets/images/products/' . $pro_of_cat->image) }}" alt="" />
+                                  <img src="{{ asset('assets/images/products/' . $pro_of_cat->image) }}" alt=""
+                                    height="180" />
                                 </a>
                                 <h2>{{ number_format($pro_of_cat->price, 0, ',', '.') }} đ</h2>
                                 <p>{{ $pro_of_cat->name }}</p>

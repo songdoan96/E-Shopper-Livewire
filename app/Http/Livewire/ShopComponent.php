@@ -7,6 +7,7 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Cart;
+use Illuminate\Support\Facades\Auth;
 
 class ShopComponent extends Component
 {
@@ -56,6 +57,10 @@ class ShopComponent extends Component
             $products = Product::where('status', '1')->orderBy('price', 'desc')->paginate($this->pagesize);
         } else {
             $products = Product::where('status', '1')->paginate($this->pagesize);
+        }
+        if (Auth::check()) {
+            Cart::instance('cart')->store(Auth::user()->email);
+            Cart::instance('wishlist')->store(Auth::user()->email);
         }
         return view('livewire.shop-component', compact('products'))->layout("layouts.base");
     }

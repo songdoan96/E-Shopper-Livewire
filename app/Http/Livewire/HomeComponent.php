@@ -10,6 +10,7 @@ use App\Models\HomeSlider;
 use App\Models\Product;
 use Livewire\Component;
 use Cart;
+use Illuminate\Support\Facades\Auth;
 
 class HomeComponent extends Component
 {
@@ -29,14 +30,21 @@ class HomeComponent extends Component
 
     public function mount()
     {
-        $this->min_price = Product::pluck('price')->min();
-        $this->max_price = Product::pluck('price')->max();
+
         $this->products = Product::where('status', '1')->limit(8)->orderBy('created_at', 'DESC')->get();
+        if (Auth::check()) {
+            Cart::instance('cart')->restore(Auth::user()->email);
+            Cart::instance('wishlist')->restore(Auth::user()->email);
+        }
     }
 
     // Add to cart
     public function storeCart($product_id, $product_name, $product_price)
     {
+        if (Auth::check()) {
+            Cart::instance('cart')->store(Auth::user()->email);
+            Cart::instance('wishlist')->store(Auth::user()->email);
+        }
         Cart::instance('cart')->add($product_id, $product_name, 1, $product_price)->associate('App\Models\Product');
         $this->emitTo('cart-count-component', 'refreshCartCount');
     }
@@ -73,6 +81,11 @@ class HomeComponent extends Component
         }
 
         $products = $this->products;
+        if (Auth::check()) {
+            Cart::instance('cart')->store(Auth::user()->email);
+            Cart::instance('wishlist')->store(Auth::user()->email);
+        }
+
         return view('livewire.home-component', compact('categories', 'brands', 'featured_products', 'products', 'sel_categories', 'sliders'))->layout("layouts.base");
     }
 }
