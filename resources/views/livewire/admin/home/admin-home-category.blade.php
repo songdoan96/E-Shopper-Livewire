@@ -38,11 +38,14 @@
   <script>
     $(document).ready(function() {
       $('.sel_categories').select2();
-      window.addEventListener('refreshComponent', e => {
-        $('.sel_categories').select2();
-      })
       $('.sel_categories').on('change', function(e) {
         @this.set('sel_categories', $(this).val());
+      })
+      Livewire.on('updateHomeCategory', () => {
+        $('.sel_categories').select2();
+        $('.sel_categories').on('change', function(e) {
+          @this.set('sel_categories', $(this).val());
+        })
       })
     });
   </script>

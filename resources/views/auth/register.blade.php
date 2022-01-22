@@ -60,7 +60,7 @@
 </x-guest-layout> --}}
 
 
-<x-guest-layout>
+<x-base-layout>
   <section id="form">
     <div class="container">
       <div class="row">
@@ -83,4 +83,4 @@
       </div>
     </div>
   </section>
-</x-guest-layout>
+</x-base-layout>

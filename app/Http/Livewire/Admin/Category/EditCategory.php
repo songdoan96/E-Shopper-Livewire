@@ -13,12 +13,11 @@ class EditCategory extends Component
     public function updated($fields)
     {
         $this->validateOnly($fields, [
-            'name' => 'required|unique:categories',
+            'name' => 'required',
         ]);
     }
     protected $messages = [
         'name.required' => 'Vui lòng nhập tên danh mục',
-        'name.unique' => 'Tên danh mục đã tồn tại',
     ];
     public function mount($cat_id)
     {
@@ -33,7 +32,7 @@ class EditCategory extends Component
     public function updateCategory()
     {
         $this->validate([
-            'name' => 'required|unique:categories',
+            'name' => 'required',
         ]);
         $cat = Category::find($this->cat_id);
         $cat->name = $this->name;

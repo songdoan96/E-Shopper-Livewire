@@ -28,6 +28,21 @@
         <input type="text" id="name" wire:model="name" class="form-control" placeholder="Nhập tên danh mục">
         @error('name')<small class="form-text text-danger">{{ $message }}</small> @enderror
       </div>
+      <div class="form-group">
+        <label for="newImage">Hình ảnh</label>
+        <input type="file" name="newImage" wire:model="newImage" class="form-control">
+        @if ($newImage)
+          <div class="flex-center my-3">
+            <img src="{{ $newImage->temporaryUrl() }}" width="150">
+          </div>
+        @else
+          @if ($image)
+            <img src="{{ asset('assets/images/brands/' . $image) }}" width="150">
+          @endif
+        @endif
+        @error('newImage')<small class="form-text text-danger">{{ $message }}</small> @enderror
+      </div>
+
 
       <button type="submit" class="btn btn-primary">Cập nhật</button>
     </form>

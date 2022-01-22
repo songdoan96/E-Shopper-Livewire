@@ -10,6 +10,8 @@ class AdminHomeCategory extends Component
 {
 
     public $sel_categories = [];
+    // protected $listeners = ['postAdded' => '$refresh'];
+
 
     public function mount()
     {
@@ -29,12 +31,14 @@ class AdminHomeCategory extends Component
 
 
         session()->flash('success_msg', 'Thêm thành công!');
-        $this->dispatchBrowserEvent('refreshComponent');
+        // $this->dispatchBrowserEvent('updateHomeCategory');
+        // $this->emitTo('admin.home.admin-home-category', 'updateHomeCategory');
+        $this->emit('updateHomeCategory');
     }
     public function render()
     {
 
-        $categories = Category::all();
+        $categories = Category::where('status', '1')->get();
         return view('livewire.admin.home.admin-home-category', compact('categories'))->layout('layouts.admin');
     }
 }

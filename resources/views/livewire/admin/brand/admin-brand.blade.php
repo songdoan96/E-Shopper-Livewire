@@ -21,9 +21,9 @@
             <tr>
               <th>STT</th>
               <th>Tên thương hiệu</th>
-              <th>Tên ngắn</th>
+              <th>Hình ảnh</th>
               <th>Trạng thái</th>
-              <th>Tùy chọn</th>
+              <th></th>
             </tr>
           </thead>
         <tbody>
@@ -31,7 +31,14 @@
             <tr>
               <td>{{ ++$key }}</td>
               <td>{{ $brand->name }}</td>
-              <td>{{ $brand->slug }}</td>
+              <td>
+                @if ($brand->logo)
+                  <img src="{{ asset('assets/images/brands/' . $brand->logo) }}" alt="{{ $brand->name }}"
+                    width="100">
+                @else
+                  Không tìm thấy logo
+                @endif
+              </td>
               <td>
                 <a href="#" wire:click.prevent="changeStatus({{ $brand->id }})">
                   @if ($brand->status == '1')

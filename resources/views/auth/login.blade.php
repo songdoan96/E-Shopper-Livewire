@@ -48,7 +48,7 @@
 </x-guest-layout> --}}
 
 
-<x-guest-layout>
+<x-base-layout>
   <section id="form">
     <!--form-->
     <div class="container">
@@ -67,7 +67,12 @@
                 <input type="checkbox" class="checkbox" name="remember">
                 Keep me signed in
               </span> --}}
-              <button type="submit" class="btn btn-default">Đăng hập</button>
+              {{-- @if (Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                  {{ __('Quên mật khẩu?') }}
+                </a>
+              @endif --}}
+              <button type="submit" class="btn btn-default">Đăng nhập</button>
             </form>
           </div>
           <!--/login form-->
@@ -77,4 +82,4 @@
     </div>
   </section>
   <!--/form-->
-</x-guest-layout>
+</x-base-layout>

@@ -30,8 +30,8 @@
             <th>Hình ảnh</th>
             <th>Giá</th>
             <th>Giá khuyến mãi</th>
-            <th>Mô tả</th>
-            <th>Nội dung</th>
+            {{-- <th>Mô tả</th> --}}
+            {{-- <th>Nội dung</th> --}}
             <th>Danh mục</th>
             <th>Thương hiệu</th>
             <th>Số lượng</th>
@@ -49,10 +49,10 @@
                 <img src="{{ asset('assets/images/products/' . $product->image) }}" alt="{{ $product->name }}"
                   width="100">
               </td>
-              <td>{{ number_format($product->price) }}</td>
+              <td>{{ number_format($product->price, 0, ',', '.') }}</td>
               <td>{{ $product->sale_price }}</td>
-              <td>{{ $product->desc }}</td>
-              <td>{{ $product->content }}</td>
+              {{-- <td>{{ $product->desc }}</td> --}}
+              {{-- <td>{{ $product->content }}</td> --}}
               <td>{{ $product->category->name }}</td>
               <td>{{ $product->brand->name }}</td>
               <td>{{ $product->quantity }}</td>

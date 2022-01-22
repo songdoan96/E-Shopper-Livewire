@@ -9,20 +9,57 @@ use App\Models\HomeCategory;
 use App\Models\HomeSlider;
 use App\Models\Product;
 use Livewire\Component;
+use Cart;
 
 class HomeComponent extends Component
 {
-    public $category_id;
-    public $brand_id;
+
+    public $min_price;
+    public $max_price;
+    public $products;
 
     public function showProducts($id, $type)
     {
-        $this->category_id = $type == "category" ? $id : null;
-        $this->brand_id = $type == "brand" ? $id : null;
+        if ($type == "category") {
+            $this->products = Product::where('category_id', $id)->where('status', '1')->limit(8)->orderBy('created_at', 'DESC')->get();
+        } else {
+            $this->products = Product::where('brand_id', $id)->where('status', '1')->limit(8)->orderBy('created_at', 'DESC')->get();
+        }
     }
 
+    public function mount()
+    {
+        $this->min_price = Product::pluck('price')->min();
+        $this->max_price = Product::pluck('price')->max();
+        $this->products = Product::where('status', '1')->limit(8)->orderBy('created_at', 'DESC')->get();
+    }
+
+    // Add to cart
+    public function storeCart($product_id, $product_name, $product_price)
+    {
+        Cart::instance('cart')->add($product_id, $product_name, 1, $product_price)->associate('App\Models\Product');
+        $this->emitTo('cart-count-component', 'refreshCartCount');
+    }
+    // Add to wishlist
+    public function storeWishlist($product_id, $product_name, $product_price)
+    {
+        Cart::instance('wishlist')->add($product_id, $product_name, 1, $product_price)->associate('App\Models\Product');
+        $this->emitTo('wishlist-count-component', 'refreshWishlistCount');
+    }
+    // remove item wishlist
+    public function removeWishlistItem($product_id)
+    {
+        foreach (Cart::instance('wishlist')->content() as $row) {
+            if ($row->id == $product_id) {
+                Cart::instance('wishlist')->remove($row->rowId);
+                $this->emitTo('wishlist-count-component', 'refreshWishlistCount');
+                return;
+            }
+        }
+    }
     public function render()
     {
+        // session()->flush();
         $categories = Category::where('status', '1')->get();
         $brands = Brand::where('status', '1')->get();
         $featured_products = Product::where('featured', '1')->inRandomOrder()->limit(10)->get();
@@ -30,19 +67,12 @@ class HomeComponent extends Component
         $sliders = HomeSlider::where('status', '1')->get();
         if ($home_categories) {
             $cats = explode(',', $home_categories->sel_categories);
-            $sel_categories = Category::whereIn('id', $cats)->get();
+            $sel_categories = Category::whereIn('id', $cats)->where('status', '1')->get();
         } else {
             $sel_categories = null;
         }
 
-        if ($this->category_id) {
-            $products = Product::where('category_id', $this->category_id)->where('status', '1')->limit(12)->orderBy('created_at', 'DESC')->get();
-        } else if ($this->brand_id)
-            $products = Product::where('brand_id', $this->brand_id)->where('status', '1')->limit(12)->orderBy('created_at', 'DESC')->get();
-        else {
-            $products = Product::where('status', '1')->limit(12)->orderBy('created_at', 'DESC')->get();
-        }
-
+        $products = $this->products;
         return view('livewire.home-component', compact('categories', 'brands', 'featured_products', 'products', 'sel_categories', 'sliders'))->layout("layouts.base");
     }
 }

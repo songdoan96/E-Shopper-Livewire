@@ -14,38 +14,40 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
-        /*
-            $table->id();
-            $table->text('name')->unique();
-            $table->text('slug')->unique();
-            $table->text('desc')->nullable();
-            $table->text('content')->nullable();
-            $table->decimal('price');
-            $table->decimal('sale_price')->nullable();
-            $table->string('image');
-            $table->enum('status', ["0", "1"])->default("0");
-            $table->bigInteger('category_id')->unsigned();
-            $table->bigInteger('brand_id')->unsigned();
-            $table->timestamps();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
-      
-        */
-        $name = $this->faker->unique()->words($nb = 7, $asText = true);
+        // TV
+        // $name = 'Android Tivi' . $this->faker->unique()->words($nb = 1, $asText = true) . '4K 55 inch KD-' . $this->faker->numberBetween(1, 15) . 'X80J';
+        // $slug = Str::slug($name);
+        // return [
+        //     'name' => $name,
+        //     'slug' => $slug,
+        //     'desc' => $this->faker->text(100),
+        //     'content' => $this->faker->text(200),
+        //     'price' => $this->faker->numberBetween(1, 9999) * 1000,
+        //     // 'sale_price' => $this->faker->numberBetween(1, 500) * 1000,
+        //     'image' => '1642838497.jpg',
+        //     'status' =>  1,
+        //     'category_id' => 1,
+        //     'brand_id' => $this->faker->numberBetween(1, 4),
+        //     'quantity' =>  $this->faker->numberBetween(0, 20),
+        //     'featured' => 0,
+        // ];
+
+        $name = 'Máy giặt ' .  $this->faker->unique()->words($nb = 5, $asText = true)  . $this->faker->numberBetween(1, 15) . 'kg WW10DSH/SV ';
         $slug = Str::slug($name);
         return [
             'name' => $name,
             'slug' => $slug,
-            'desc' => $this->faker->text(100),
-            'content' => $this->faker->text(200),
+            'desc' => $this->faker->text(5),
+            'content' => $this->faker->text(5),
             'price' => $this->faker->numberBetween(1, 9999) * 1000,
             // 'sale_price' => $this->faker->numberBetween(1, 500) * 1000,
-            'image' => 'digital_' . $this->faker->unique()->numberBetween(1, 67) . '.jpg',
-            'status' =>  (string)$this->faker->numberBetween(0, 1),
-            'category_id' => $this->faker->numberBetween(1, 7),
-            'brand_id' => $this->faker->numberBetween(1, 15),
+            'image' => '1642842293.jpg',
+            'images' => '16428422930.jpg|16428422931.jpg|16428422932.jpg|16428422933.jpg',
+            'status' =>  '1',
+            'category_id' => 3,
+            'brand_id' => $this->faker->numberBetween(2, 4),
             'quantity' =>  $this->faker->numberBetween(0, 20),
-            'featured' => (string)$this->faker->numberBetween(0, 1),
+            'featured' => '0',
         ];
     }
 }

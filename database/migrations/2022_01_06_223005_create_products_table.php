@@ -19,18 +19,19 @@ class CreateProductsTable extends Migration
             $table->text('slug')->unique();
             $table->text('desc')->nullable();
             $table->text('content')->nullable();
-            $table->string('price');
-            $table->string('sale_price')->default("0")->nullable();
+            $table->unsignedBigInteger('price');
             $table->string('image');
             $table->text('images')->nullable();
-            $table->enum('status', ["0", "1"])->default("0");
-            $table->integer('category_id')->unsigned();
-            $table->integer('brand_id')->unsigned();
-            $table->integer('quantity')->default("0");
-            $table->enum('featured', ["0", "1"])->default("0");
+            $table->unsignedBigInteger('sale_price')->nullable()->default(0);
+            $table->dateTime('sale_exp_date')->nullable();
+            $table->enum('status', [0, 1])->default(0);
+            $table->unsignedBigInteger('category_id')->unsigned();
+            $table->unsignedBigInteger('brand_id')->unsigned();
+            $table->integer('quantity')->default(0);
+            $table->enum('featured', [0, 1])->default(0);
             $table->timestamps();
-            // $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            // $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         });
     }
 

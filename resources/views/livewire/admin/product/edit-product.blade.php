@@ -27,14 +27,15 @@
         <input type="text" name="name" wire:model="name" class="form-control" placeholder="Nhập tên sản phẩm">
         @error('name')<small class="form-text text-danger">{{ $message }}</small> @enderror
       </div>
-      <div class="form-group">
+      <div class="form-group" wire:ignore>
         <label for="desc">Mô tả sản phẩm</label>
-        <input type="text" name="desc" wire:model="desc" class="form-control" placeholder="Nhập mô tả">
+        <input type="text" name="desc" id="desc" wire:model="desc" class="form-control" placeholder="Nhập mô tả">
         @error('desc')<small class="form-text text-danger">{{ $message }}</small> @enderror
       </div>
-      <div class="form-group">
+      <div class="form-group" wire:ignore>
         <label for="content">Nội dung sản phẩm</label>
-        <input type="text" name="content" wire:model="content" class="form-control" placeholder="Nhập mô tả">
+        <input type="text" name="content" id="content" wire:model="content" class="form-control"
+          placeholder="Nhập mô tả">
         @error('content')<small class="form-text text-danger">{{ $message }}</small> @enderror
       </div>
       <div class="form-group">
@@ -56,6 +57,26 @@
           </div>
         @else
           <img src="{{ asset('assets/images/products/' . $image) }}" width="150">
+        @endif
+        @error('newImage')<small class="form-text text-danger">{{ $message }}</small> @enderror
+      </div>
+      <div class="form-group">
+        <label for="newImage">Bộ sưu tập</label>
+        <input type="file" name="newImages" wire:model="newImages" class="form-control" multiple>
+        @if ($newImages)
+          <div class="flex-center my-3">
+            @foreach ($newImages as $newImage)
+              @if ($newImage)
+                <img src="{{ $newImage->temporaryUrl() }}" width="150">
+              @endif
+            @endforeach
+          </div>
+        @else
+          @foreach ($images as $image)
+            @if ($image)
+              <img src="{{ asset('assets/images/products/' . $image) }}" width="150">
+            @endif
+          @endforeach
         @endif
         @error('newImage')<small class="form-text text-danger">{{ $message }}</small> @enderror
       </div>
@@ -108,3 +129,56 @@
 
   </div>
 </div>
+
+
+@push('scripts')
+  <script>
+    $(document).ready(function() {
+      tinymce.init({
+        selector: '#desc',
+        toolbar: 'undo redo | forecolor backcolor | styleselect | fontselect fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
+        setup: function(editor) {
+          editor.on('change', function(e) {
+            tinyMCE.triggerSave();
+            let sd_data = $('#desc').val();
+            @this.set("desc", sd_data);
+          });
+        }
+      });
+      tinymce.init({
+        selector: '#content',
+        toolbar: 'undo redo | forecolor backcolor | styleselect | fontselect fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
+        setup: function(editor) {
+          editor.on('change', function(e) {
+            tinyMCE.triggerSave();
+            let d_data = $('#content').val();
+            @this.set("content", d_data);
+          });
+        }
+      });
+
+
+
+      $("#sale_exp_date").flatpickr({
+        enableTime: true,
+        dateFormat: "Y-m-d H:i:ss",
+        onChange: function(selectedDates, dateStr, instance) {
+          @this.sale_exp_date = dateStr;
+        },
+      });
+
+      Livewire.on('show_exp_date', () => {
+        $("#sale_exp_date").flatpickr({
+          enableTime: true,
+          dateFormat: "Y-m-d H:i:ss",
+          onChange: function(selectedDates, dateStr, instance) {
+            @this.sale_exp_date = dateStr;
+          },
+        });
+      })
+
+
+    })
+  </script>
+
+@endpush

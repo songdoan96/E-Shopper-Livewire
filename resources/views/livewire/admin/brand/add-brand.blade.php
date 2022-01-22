@@ -29,11 +29,23 @@
           placeholder="Nhập tên thương hiệu">
         @error('name')<small class="form-text text-danger">{{ $message }}</small> @enderror
       </div>
-      {{-- <div class="form-group">
-      <label for="slug">Tên danh mục</label>
-      <input type="text" id="slug" name="slug" class="form-control" placeholder="Nhập tên danh mục">
-      <small class="form-text text-danger">eror</small>
-    </div> --}}
+      <div class="form-group">
+        <label for="image">Hình ảnh</label>
+        <input type="file" name="image" wire:model="image" class="form-control" placeholder="Nhập mô tả">
+        @if ($image)
+          <img src="{{ $image->temporaryUrl() }}" width="150">
+        @endif
+        @error('image')<small class="form-text text-danger">{{ $message }}</small> @enderror
+      </div>
+
+      <div class="form-group">
+        <label for="status">Trạng thái</label>
+        <select id="status" name="status" wire:model="status" class="form-control" name="" id="">
+          <option value="0">Ẩn</option>
+          <option value="1">Kích hoạt</option>
+        </select>
+        @error('status')<small class="form-text text-danger">{{ $message }}</small> @enderror
+      </div>
 
       <button type="submit" class="btn btn-primary">Thêm</button>
     </form>

@@ -21,7 +21,7 @@ class CreateHomeSlidersTable extends Migration
             $table->string('image');
             $table->string('price');
             $table->string('link');
-            $table->tinyInteger('status')->default(0);
+            $table->enum('status', [0, 1])->default(0);
             $table->timestamps();
         });
     }

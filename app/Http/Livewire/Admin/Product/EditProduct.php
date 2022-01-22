@@ -29,6 +29,9 @@ class EditProduct extends Component
     public $featured;
     public $quantity;
 
+    public $images;
+    public $newImages;
+
     protected $messages = [
         'name.required' => 'Vui lòng nhập tên sản phẩm',
         'name.unique' => 'Tên sản phẩm đã tồn tại',
@@ -63,6 +66,7 @@ class EditProduct extends Component
             $this->price = $product->price;
             $this->sale_price = $product->sale_price;
             $this->image = $product->image;
+            $this->images = explode("|", $product->images);
             $this->status = $product->status;
             $this->category_id = $product->category_id;
             $this->brand_id = $product->brand_id;
@@ -92,9 +96,27 @@ class EditProduct extends Component
         }
 
         if ($this->newImage) {
-            $imageName = "digital_" . Carbon::now()->timestamp . '.' . $this->newImage->extension();
+            unlink('assets/images/products' . '/' . $product->image);
+            $imageName = Carbon::now()->timestamp . '.' . $this->newImage->extension();
             $this->newImage->storeAs('products', $imageName);
             $product->image = $imageName;
+        }
+        if ($this->newImages) {
+            if ($product->images) {
+                $images = explode("|", $product->images);
+                foreach ($images as $key => $image) {
+                    if ($image) {
+                        unlink('assets/images/products' . '/' . $image);
+                    }
+                }
+            }
+            $imagesName = "";
+            foreach ($this->newImages as $key => $image) {
+                $imgName = Carbon::now()->timestamp . $key . '.' . $image->extension();
+                $image->storeAs('products', $imgName);
+                $imagesName = $imagesName . '|' . $imgName;
+            }
+            $product->images = $imagesName;
         }
 
         $product->category_id = $this->category_id;
