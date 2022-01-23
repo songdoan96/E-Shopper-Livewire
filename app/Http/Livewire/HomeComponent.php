@@ -33,8 +33,8 @@ class HomeComponent extends Component
 
         $this->products = Product::where('status', '1')->limit(8)->orderBy('created_at', 'DESC')->get();
         if (Auth::check()) {
-            Cart::instance('cart')->restore(Auth::user()->email);
-            Cart::instance('wishlist')->restore(Auth::user()->email);
+            // Cart::instance('cart')->restore(Auth::user()->email);
+            // Cart::instance('wishlist')->restore(Auth::user()->email);
         }
     }
 
